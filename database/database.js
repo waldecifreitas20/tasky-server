@@ -4,7 +4,7 @@ const dbEnvs = require("../config/database.env");
 
 dbEnvs.DB_PASSWORD = decodeURIComponent(dbEnvs.DB_PASSWORD);
 
-const sql = postgres({
+module.exports = postgres({
   host: dbEnvs.DB_HOST,
   database: dbEnvs.DB_NAME,
   username: dbEnvs.DB_USER,
@@ -15,5 +15,3 @@ const sql = postgres({
     options: `project=${dbEnvs.DB_ENDPOINT_ID}`
   }
 });
-
-module.exports = sql;
