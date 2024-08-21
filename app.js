@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
 
-app.use(express.urlencoded({extended:  false}))
+const cors = require("cors");
+
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
+app.use(cors());
 
 require('./routes/connectionTest.route')(app);
 require('./routes/user.routes')(app);
