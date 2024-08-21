@@ -1,0 +1,15 @@
+{
+  "name": "tasky back-end",
+  "version": "0.0.95",
+  "description": "It is a simple crud for tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "waldeci freitas",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "postgres": "^3.4.4"
+  }
+}
