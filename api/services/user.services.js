@@ -19,13 +19,12 @@ async function createUser(userData) {
     }
 
   } catch (error) {
-    console.log(error);
 
     return {
-      statusCode: 500,
+      statusCode: error.statusCode,
       body: {
-        error: "several error",
-        message: "user sign up has failed"
+        error: error.name,
+        message: error.message,
       }
     }
   }
