@@ -1,5 +1,6 @@
 const { connectionTestController } = require("../api/controllers/connectionTest.controller");
+const { testConnectionRoute } = require("./app.routes");
 
 module.exports = (app) => {
-  app.get("/test-connection", connectionTestController);
+  app.get(testConnectionRoute, connectionTestController);
 }
