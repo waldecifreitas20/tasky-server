@@ -1,9 +1,24 @@
-require("dotenv").config();
+const isDevMode = process.env.NODE_ENV == "dev"
 
-module.exports = {
-  DB_HOST: process.env.PGHOST,
-  DB_NAME: process.env.PGDATABASE,
-  DB_USER: process.env.PGUSER,
-  DB_PASSWORD: process.env.PGPASSWORD,
-  DB_ENDPOINT_ID: process.env.ENDPOINT_ID,
+require("dotenv").config({
+  path: isDevMode ? ".env.dev" : ".env"
+});
+
+const BASE_CONFIG = {
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  username: process.env.PGUSER,
+  password: process.env.DB_PASSWORD,
+  port: "5432",
 }
+
+const PRODUCTION_ENV = {
+  ...BASE_CONFIG,
+  ssl: "require",
+  connection: {
+    options: `project=${process.env.ENDPOINT_ID}`
+  }
+}
+
+
+module.exports = isDevMode ? BASE_CONFIG : PRODUCTION_ENV;
