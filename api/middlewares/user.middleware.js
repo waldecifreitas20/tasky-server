@@ -25,7 +25,7 @@ const errorResponse = (res, status, { error, message }) => {
 }
 
 
-async function checkUserSignUpParams(req, res, next) {
+async function checkUserSignUp(req, res, next) {
   if (isMissingParams(req.body)) {
     return errorResponse(res, 400, {
       error: "missing params",
@@ -71,8 +71,13 @@ async function checkUserToken(req, res, next) {
   return next();
 }
 
+function checkUserLogin(req, res, next) {
+  next();
+}
+
 module.exports = {
-  checkUserSignUpParams,
+  checkUserSignUp,
+  checkUserLogin,
   checkUserToken,
 };
 

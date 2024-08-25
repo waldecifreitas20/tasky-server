@@ -32,7 +32,15 @@ async function checkToken(req, res) {
     .send({ message: "token is valid" })
 }
 
+
+async function loginUser(req, res) {
+  return res
+    .status(200)
+    .send();
+}
+
 module.exports = {
   signUpUser,
   checkToken,
+  loginUser
 }
