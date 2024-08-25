@@ -20,7 +20,7 @@ const isInvalidEmail = (email) => {
 
 const errorResponse = (res, status, { error, message }) => {
   return res
-    .status(400)
+    .status(status)
     .send({ error, message })
 }
 
@@ -49,11 +49,9 @@ async function checkUserToken(req, res, next) {
       message: "no token was provided in headers",
     });
   }
-
-  
   
   const token = req.headers.authorization;
-  console.log(token);
+
   const [bearer, hash] = token.split(" ");
 
   if (bearer !== "Bearer") {
