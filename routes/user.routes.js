@@ -7,6 +7,7 @@ const { user } = require("./app.routes");
 module.exports = (app) => {
   
   userRouter.post(user.signUpRoute, userMiddlewares.checkUserSignUpParams, userControllers.signUpUser);
+  userRouter.post(user.checkToken, userMiddlewares.checkUserToken, userControllers.checkToken);
 
   app.use("/user", userRouter);
 }

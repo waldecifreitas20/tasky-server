@@ -26,6 +26,13 @@ async function signUpUser(req, res) {
 
 }
 
+async function checkToken(req, res) {
+  return res
+    .status(200)
+    .send({ message: "token is valid" })
+}
+
 module.exports = {
   signUpUser,
+  checkToken,
 }

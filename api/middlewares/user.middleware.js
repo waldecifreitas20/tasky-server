@@ -1,3 +1,6 @@
+const getPath = require("path").resolve;
+const { isValidToken } = require(getPath("utils/jwt.js"));
+
 const isMissingParams = (requestBody) => {
   const isBodyEmpty = !requestBody;
   const isBodyFull =
@@ -8,24 +11,30 @@ const isMissingParams = (requestBody) => {
   return isBodyEmpty || !isBodyFull;
 }
 
-const isInvalidEmail = (email) => { 
+const isInvalidEmail = (email) => {
   const hasAtSign = email.indexOf("@") != -1;
   const hasDot = email.indexOf(".") != -1;
 
   return !hasAtSign || !hasDot;
 }
 
+const errorResponse = (res, status, { error, message }) => {
+  return res
+    .status(400)
+    .send({ error, message })
+}
+
 
 async function checkUserSignUpParams(req, res, next) {
   if (isMissingParams(req.body)) {
-    return res.status(400).send({
+    return errorResponse(res, 400, {
       error: "missing params",
       message: "request body must have username, email and password",
     });
   }
 
   if (isInvalidEmail(req.body.email)) {
-    return res.status(400).send({
+    return errorResponse(res, 400, {
       error: "invalid email",
       message: "user email is not valid",
     });
@@ -33,5 +42,39 @@ async function checkUserSignUpParams(req, res, next) {
   return next();
 }
 
-module.exports = { checkUserSignUpParams };
+async function checkUserToken(req, res, next) {
+  if (!req.headers.authorization) {
+    return errorResponse(res, 401, {
+      error: "Unauthorized",
+      message: "no token was provided in headers",
+    });
+  }
+
+  
+  
+  const token = req.headers.authorization;
+  console.log(token);
+  const [bearer, hash] = token.split(" ");
+
+  if (bearer !== "Bearer") {
+    return errorResponse(res, 401, {
+      error: "invalid token",
+      message: "Access token is invalid or has expired"
+    });
+  }
+
+  if (!isValidToken(hash)) {
+    return errorResponse(res, 401, {
+      error: "invalid token",
+      message: "Access token is invalid or has expired"
+    });
+  }
+
+  return next();
+}
+
+module.exports = {
+  checkUserSignUpParams,
+  checkUserToken,
+};
 
