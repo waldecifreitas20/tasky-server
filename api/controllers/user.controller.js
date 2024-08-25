@@ -1,7 +1,6 @@
 const userServices = require("../services/user.services");
 
 async function signUpUser(req, res) {
-  console.log("Request to register a new user received");
 
   try {
     const userData = {
@@ -26,6 +25,7 @@ async function signUpUser(req, res) {
 
 }
 
+
 async function checkToken(req, res) {
   return res
     .status(200)
@@ -34,9 +34,21 @@ async function checkToken(req, res) {
 
 
 async function loginUser(req, res) {
-  return res
-    .status(200)
-    .send();
+  try {
+    const { email, password } = req.body;
+    const response = await userServices.login(email, password);
+
+    return res
+      .status(response.statusCode)
+      .send(response.body);
+
+  } catch (error) {
+    console.error(error);
+
+    return res
+      .status(500)
+      .send({ error: "Unexpected error occurred. Try again later" });
+  }
 }
 
 module.exports = {

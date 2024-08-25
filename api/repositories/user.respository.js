@@ -1,13 +1,5 @@
 const sql = require("../../database/database");
-
-
-const throwError = (statusCode, name, message) => {
-  throw  {
-    statusCode: 400,
-    name: "duplicated account",
-    message: "User account already exists",
-  }
-}
+const { throwError } = require("../../utils/messages");
 
 async function createUser(userData) {
 
@@ -28,6 +20,26 @@ async function createUser(userData) {
   }
 }
 
+async function getUserByPk(email) {
+  try {
+    const result = await sql`
+    SELECT * FROM users WHERE users.email = ${email};
+  `;
+    if (result.length == 0) {
+      throwError(401, "Invalid credentials");
+    }
+    return result[0];
+  } catch (error) {
+
+    if (error.code === 401) {
+      throw error;
+    }
+
+    throwError(502, "several error", "Unknown error at database");
+  }
+}
+
 module.exports = {
   createUser,
+  getUserByPk,
 }

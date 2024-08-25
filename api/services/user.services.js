@@ -1,5 +1,7 @@
 const userRepo = require("../repositories/user.respository");
+
 const { generateToken } = require("../../utils/jwt");
+const { throwError } = require("../../utils/messages");
 const bcrypt = require("../../utils/bcrypt");
 
 async function createUser(userData) {
@@ -27,7 +29,7 @@ async function createUser(userData) {
   } catch (error) {
 
     return {
-      statusCode: error.statusCode,
+      statusCode: error.code,
       body: {
         error: error.name,
         message: error.message,
@@ -43,9 +45,14 @@ async function login(email, password) {
   try {
     const user = await userRepo.getUserByPk(email);
 
+    const isSamePassword = bcrypt.checkPassword(user.password, password);
 
+    console.log(isSamePassword);
+    if (!isSamePassword) {
+      throwError(401, "Invalid credentials");
+    }
 
-    const token = generateToken({ username: userData.username, email: userData.email });
+    const token = generateToken({ email, username: user.username });
 
     return {
       statusCode: 200,
@@ -56,7 +63,7 @@ async function login(email, password) {
 
   } catch (error) {
     return {
-      statusCode: error.statusCode,
+      statusCode: error.code,
       body: {
         error: error.name,
         message: error.message,
