@@ -1,4 +1,5 @@
 const userRepo = require("../repositories/user.respository");
+const { generateToken } = require("../../utils/jwt");
 
 async function createUser(userData) {
 
@@ -10,11 +11,13 @@ async function createUser(userData) {
       password: userData.password.toString(),
     });
 
+    const token = generateToken({ username: userData.username, email: userData.email });
+
     return {
       statusCode: 200,
       body: {
         message: "user account has been created with success",
-        access_token: `Bearer fake_token_${Math.random()}`
+        authorization: token,
       }
     }
 
