@@ -8,7 +8,7 @@ const BASE_CONFIG = {
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   username: process.env.PGUSER,
-  password: process.env.DB_PASSWORD,
+  password: process.env.PGPASSWORD,
   port: "5432",
 }
 
