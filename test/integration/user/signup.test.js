@@ -2,9 +2,6 @@ const getPath = require("path").resolve;
 const http = require("../requester");
 
 
-const { signUpRoute } = require(getPath("routes/app.routes.js")).user
-
-
 describe("It should test sign up process", () => {
   async function httpPOST(username, email, password) {
     return await http.post(`/user/sign-up`)
