@@ -1,7 +1,8 @@
 function isInvalidEmail(email) {
-  if (!email) {
+  if (!email || !email.length < 8) {
     return true;
   }
+  
   const hasAtSign = email.indexOf("@") != -1;
   const hasDot = email.indexOf(".") != -1;
 
