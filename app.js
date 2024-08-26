@@ -9,6 +9,7 @@ app.use(cors());
 
 require('./routes/connectionTest.route')(app);
 require('./routes/user.routes')(app);
+require('./routes/task.routes')(app);
 
 
 module.exports = app;
