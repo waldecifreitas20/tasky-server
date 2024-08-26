@@ -1,14 +1,10 @@
-const sql = require("../../database/database");
+const { UserModel } = require("../models/User")
 const { throwError } = require("../../utils/messages");
 
 async function createUser(userData) {
 
   try {
-    return await sql`
-      INSERT INTO 
-        users (username, email, password) 
-      VALUES 
-        (${userData.username}, ${userData.email} , ${userData.password});`;
+    return await UserModel.create(userData);
   } catch (error) {
     console.log(error);
 
@@ -22,9 +18,8 @@ async function createUser(userData) {
 
 async function getUserByPk(email) {
   try {
-    const result = await sql`
-    SELECT * FROM users WHERE users.email = ${email};
-  `;
+    const result = await UserModel.getByPk(email);
+
     if (result.length == 0) {
       throwError(401, "Invalid credentials");
     }
