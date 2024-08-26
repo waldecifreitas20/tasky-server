@@ -6,10 +6,10 @@ const { generateToken } = require(getPath("utils/jwt"));
 const { errorResponse, responseMessage } = require(getPath("utils/messages"));
 const bcrypt = require(getPath("utils/bcrypt"));
 
+
 async function createUser(userData) {
 
   try {
-
     const hash = bcrypt.generatePassword(userData.password);
 
     await userRepo.createUser({
@@ -27,18 +27,12 @@ async function createUser(userData) {
     );
 
   } catch (error) {
-
-    return errorResponse(error.code, {
-      httpStatus: error.code,
-      body: {
-        error: error.name,
-        message: error.message,
-      }
-    });
+    if (error.code == "23505") {
+      return errorResponse(400, "User account already exists");
+    }
+    return errorResponse(502, "Several Error", "Create user process has failed");
   }
-
 }
-
 
 
 async function login(email, password) {
@@ -48,7 +42,7 @@ async function login(email, password) {
     const isSamePassword = bcrypt.checkPassword(user.password, password);
 
     if (!isSamePassword) {
-      throwError(401, "Invalid credentials");
+      return errorResponse(401, "Invalid credentials");
     }
 
     const token = generateToken({ email, username: user.username });
@@ -59,13 +53,10 @@ async function login(email, password) {
     );
 
   } catch (error) {
-    return {
-      httpStatus: error.code,
-      body: {
-        error: error.name,
-        message: error.message,
-      }
+    if (error.code === "59123") {
+      return errorResponse(401, "Invalid credentials");
     }
+    return errorResponse(502, "Several Error", "Create user process has failed");
   }
 }
 module.exports = {
