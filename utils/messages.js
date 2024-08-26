@@ -29,5 +29,6 @@ const errorResponse = (httpStatus, error, details) => {
 
 module.exports = {
   throwError,
-  responseMessage
+  responseMessage,
+  errorResponse
 }
