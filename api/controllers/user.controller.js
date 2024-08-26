@@ -12,7 +12,7 @@ async function signUpUser(req, res) {
     const response = await userServices.createUser(userData);
 
     return res
-      .status(response.statusCode)
+      .status(response.httpStatus)
       .send(response.body);
 
   } catch (error) {
@@ -39,7 +39,7 @@ async function loginUser(req, res) {
     const response = await userServices.login(email, password);
 
     return res
-      .status(response.statusCode)
+      .status(response.httpStatus)
       .send(response.body);
 
   } catch (error) {

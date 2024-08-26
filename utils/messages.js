@@ -8,7 +8,7 @@ const throwError = (statusCode, name, message) => {
 
 const responseMessage = (httpStatus, message, options = {}) => {
   return {
-    statusCode: httpStatus,
+    httpStatus,
     body: {
       message,
       ...options
@@ -18,7 +18,7 @@ const responseMessage = (httpStatus, message, options = {}) => {
 
 const errorResponse = (httpStatus, error, details) => {
   return {
-    statusCode: httpStatus,
+    httpStatus,
     body: {
       error,
       details,
@@ -26,9 +26,16 @@ const errorResponse = (httpStatus, error, details) => {
   }
 }
 
+const sendErrorResponse = (res, httpStatus, { error, message }) => {
+  return res
+    .status(httpStatus)
+    .send({ error, message })
+}
+
 
 module.exports = {
   throwError,
   responseMessage,
-  errorResponse
+  errorResponse,
+  sendErrorResponse
 }

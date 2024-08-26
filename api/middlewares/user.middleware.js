@@ -1,36 +1,12 @@
 const getPath = require("path").resolve;
 const { isValidToken } = require(getPath("utils/jwt.js"));
-
-
-const isInvalidEmail = email => {
-  if (!email) {
-    return true;
-  }
-  const hasAtSign = email.indexOf("@") != -1;
-  const hasDot = email.indexOf(".") != -1;
-
-  return !hasAtSign || !hasDot;
-}
-
-const isInvalidPassword = password => {
-  if (!password) {
-    return true;
-  }
-
-  return password.length < 8 || password.length > 16
-}
-
-const errorResponse = (res, status, { error, message }) => {
-  return res
-    .status(status)
-    .send({ error, message })
-}
-
+const { sendErrorResponse } = require(getPath("utils/messages.js"));
+const { isInvalidEmail, isInvalidPassword } = require(getPath("utils/validations.js"));
 
 
 async function checkUserSignUp(req, res, next) {
   if (!req.body) {
-    return errorResponse(res, 400, {
+    return sendErrorResponse(res, 400, {
       error: "missing params",
       message: "request body must have username, email and password",
     });
@@ -39,7 +15,7 @@ async function checkUserSignUp(req, res, next) {
   const { username, email, password } = req.body;
 
   if (!username || isInvalidEmail(email) || isInvalidPassword(password)) {
-    return errorResponse(res, 400, {
+    return sendErrorResponse(res, 400, {
       error: "invalid params",
       message: "email, username and/or password are not valid",
     });
@@ -52,7 +28,7 @@ async function checkUserSignUp(req, res, next) {
 
 async function checkUserToken(req, res, next) {
   if (!req.headers.authorization) {
-    return errorResponse(res, 401, {
+    return sendErrorResponse(res, 401, {
       error: "Unauthorized",
       message: "no token was provided in headers",
     });
@@ -62,14 +38,14 @@ async function checkUserToken(req, res, next) {
   const [bearer, hash] = token.split(" ");
 
   if (bearer !== "Bearer") {
-    return errorResponse(res, 401, {
+    return sendErrorResponse(res, 401, {
       error: "invalid token",
       message: "Access token is invalid or has expired"
     });
   }
 
   if (!isValidToken(hash)) {
-    return errorResponse(res, 401, {
+    return sendErrorResponse(res, 401, {
       error: "invalid token",
       message: "Access token is invalid or has expired"
     });
@@ -81,7 +57,7 @@ async function checkUserToken(req, res, next) {
 
 function checkUserLogin(req, res, next) {
   if (!req.body) {
-    return errorResponse(res, 401, {
+    return sendErrorResponse(res, 401, {
       error: "missing params",
       message: "Email and/or password missing",
     });
@@ -90,7 +66,7 @@ function checkUserLogin(req, res, next) {
   const { email, password } = req.body;
 
   if (isInvalidEmail(email) || isInvalidPassword(password)) {
-    return errorResponse(res, 401, {
+    return sendErrorResponse(res, 401, {
       error: "Invalid credentials",
     });
   }
