@@ -18,7 +18,7 @@ const responseMessage = (httpStatus, message, options = {}) => {
 
 const errorResponse = (httpStatus, error, details) => {
   return {
-    statusCode: error.code,
+    statusCode: httpStatus,
     body: {
       error,
       details,
