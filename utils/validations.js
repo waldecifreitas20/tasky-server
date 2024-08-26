@@ -1,5 +1,5 @@
 function isInvalidEmail(email) {
-  if (!email || !email.length < 8) {
+  if (!email || email.length < 8) {
     return true;
   }
   
