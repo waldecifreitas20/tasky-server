@@ -81,7 +81,7 @@ async function checkUserToken(req, res, next) {
 
 function checkUserLogin(req, res, next) {
   if (!req.body) {
-    return errorResponse(res, 400, {
+    return errorResponse(res, 401, {
       error: "missing params",
       message: "Email and/or password missing",
     });
@@ -90,7 +90,7 @@ function checkUserLogin(req, res, next) {
   const { email, password } = req.body;
 
   if (isInvalidEmail(email) || isInvalidPassword(password)) {
-    return errorResponse(res, 400, {
+    return errorResponse(res, 401, {
       error: "Invalid credentials",
     });
   }
