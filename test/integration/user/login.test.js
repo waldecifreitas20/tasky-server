@@ -1,13 +1,8 @@
 const getPath = require("path").resolve;
-const http = require("../requester");
+const { http, signUp } = require("../requester");
 
 const { loginRoute } = require(getPath("routes/app.routes.js")).user;
 
-
-async function signUp(username, email, password) {
-  return await http.post(`/user/sign-up`)
-    .send({ username, email, password })
-}
 
 async function login(email, password) {
   return await http
@@ -39,8 +34,7 @@ describe("It checks login route", () => {
     await signUp(username, 'test@mailcom', password);
 
     await login(email, password).then(res => {
-      console.log(res.body);
-      
+
       expect(res.status).toBe(401);
     });
 
@@ -82,9 +76,9 @@ describe("It checks login route", () => {
     await login(email, password).then(res => {
       expect(res.status).toBe(401);
     });
-   });
+  });
 
-  test("Login without email and password", async () => { 
+  test("Login without email and password", async () => {
     const username = `user-${Math.random()}`;
     const email = `test-${username}@email.com`;
     const password = "12345678";

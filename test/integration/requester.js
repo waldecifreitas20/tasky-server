@@ -1,6 +1,14 @@
 const { resolve: getPath } = require("path");
 
 const app = require(getPath("app.js"));
-const requester = require("supertest");
+const http = require("supertest")(app);
 
-module.exports = requester(app);
+async function signUp(username, email, password) {
+  return await http.post(`/user/sign-up`)
+    .send({ username, email, password })
+}
+
+module.exports = { 
+  http, 
+  signUp 
+};

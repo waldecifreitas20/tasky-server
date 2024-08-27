@@ -1,19 +1,15 @@
 const getPath = require("path").resolve;
-const http = require("../requester");
+const { signUp } = require("../requester");
 
 
 describe("It should test sign up process", () => {
-  async function httpPOST(username, email, password) {
-    return await http.post(`/user/sign-up`)
-      .send({ username, email, password })
-  }
 
   test("User sign up with success", async () => {
     const username = `user-${Math.random()}`;
     const email = `${username}@fakeemail.com`;
     const password = "13246587121";
 
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(200);
       })
@@ -24,7 +20,7 @@ describe("It should test sign up process", () => {
     const email = ``;
     const password = "";
 
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(400);
       })
@@ -35,7 +31,7 @@ describe("It should test sign up process", () => {
     const email = `${username}@fakeemail.com`;
     const password = "13246587121";
 
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(400);
       })
@@ -46,13 +42,13 @@ describe("It should test sign up process", () => {
     const email = `${username}@fakeemail.com`;
     const password = "13246587121";
     /* sign up first */
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(200);
       });
 
     /* try to sign up again */
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(400);
       });
@@ -63,7 +59,7 @@ describe("It should test sign up process", () => {
     const email = `${username}fakeemailcom`;
     const password = "13246587121";
 
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(400);
       });
@@ -74,7 +70,7 @@ describe("It should test sign up process", () => {
     const email = `${username}@fakeemail.com`;
     const password = "";
 
-    await httpPOST(username, email, password)
+    await signUp(username, email, password)
       .then(response => {
         expect(response.status).toBe(400);
       });

@@ -1,5 +1,5 @@
 const getPath = require("path").resolve;
-const http = require("../requester");
+const { http } = require("../requester");
 
 const jwt = require(getPath("utils/jwt.js"));
 const { checkTokenRoute } = require(getPath("routes/app.routes.js")).user;
