@@ -1,6 +1,8 @@
 const getPath = require("path").resolve;
+
 const { sendErrorResponse } = require(getPath("utils/messages"));
 const { isInvalidEmail } = require(getPath("utils/validations.js"));
+const { extractToken } = require(getPath("utils/jwt.js"));
 
 const hasRequiredParams = task => {
   if (!task) return false;
@@ -24,16 +26,26 @@ const hasRequiredParams = task => {
   return true;
 }
 
-function checkTaskParams(req, res, next) {
+const isSameEmail = (token, email) => {
+  const decode = extractToken(token);
+  return decode.email === email;
+}
 
-  if (isInvalidEmail(req.body.user_account)) {
-    return sendErrorResponse(res, 400, {error: "no valid user account provided"})
+
+function checkTaskParams(req, res, next) {
+  const email = req.body.user_account;
+  const token = req.headers.authorization.split(" ")[1];
+
+  if (isInvalidEmail(email) || !isSameEmail(token, email)) {
+    return sendErrorResponse(res, 400, { error: "invalid account informed" })
   }
 
   if (!hasRequiredParams(req.body.task)) {
-    return sendErrorResponse(res, 400, {error: "missing required params"})
+    return sendErrorResponse(res, 400, {
+      error: "missing required params",
+      message: `Required params are $name $date. $hour and $whole_day must not be both null`
+    });
   }
-  
 
   return next();
 }

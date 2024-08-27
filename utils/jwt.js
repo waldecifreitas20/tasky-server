@@ -16,7 +16,12 @@ function isValidToken(token) {
   }
 }
 
+function extractToken(token) {
+  return jwt.verify(token, API_KEY);
+}
+
 module.exports = {
   generateToken,
-  isValidToken
+  isValidToken,
+  extractToken,
 }
