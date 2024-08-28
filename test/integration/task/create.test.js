@@ -11,7 +11,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       task: {
         name: "lalala",
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
         hour: "",
         full_day: true,
       }
@@ -29,7 +29,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       task: {
         name: "lalala",
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
         hour: "",
         full_day: true,
       }
@@ -47,7 +47,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       user_account: email,
       task: {
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
         hour: "",
         full_day: true,
       }
@@ -84,7 +84,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       task: {
         name: "lalala",
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
       }
     }
 
@@ -102,7 +102,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       task: {
         name: "lalala",
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
         hour: "",
         full_day: true,
       }
@@ -122,7 +122,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       task: {
         name: "lalala",
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
         hour: "",
         full_day: true,
       }
@@ -141,7 +141,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       task: {
         name: "lalala",
         desc: "none",
-        date: "06-05-2055",
+        date: "2020-01-20",
         hour: "",
         full_day: true,
       }
