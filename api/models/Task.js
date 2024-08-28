@@ -3,7 +3,7 @@ const SQL = require(getPath("database/database.js"));
 
 class TaskModel {
 
-  async create(email, {
+  async create({
     task_name,
     description,
     date,
@@ -12,6 +12,8 @@ class TaskModel {
     belongs_to
   }) {
 
+    console.log(date);
+    
     return await SQL`
       INSERT INTO tasks( 
           task_name, 
@@ -33,9 +35,16 @@ class TaskModel {
 
   async getByFk(email) {
     return await SQL`
-      SELECT *
+      SELECT 
+        task_id AS id, 
+        task_name AS name,
+        description AS desc, 
+        TO_CHAR(tasks.date::DATE, 'yyyy-mm-dd') AS date, 
+        hour,
+        is_all_day AS full_day 
       FROM tasks
-      WHERE tasks.belongs_to = '${email.toString()}';
+      WHERE tasks.belongs_to = ${email.toString()}
+      ORDER BY tasks.date DESC;
     `;
 
   }

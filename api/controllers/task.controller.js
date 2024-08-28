@@ -2,8 +2,6 @@ const taskServices = require("../services/task.services");
 
 async function createTask(req, res) {
   const task = req.body.task;
-  const token = req.headers.authorization;
-  const email = req.body.user_account;
 
   const taskData = {
     task_name: task.name,
@@ -14,7 +12,7 @@ async function createTask(req, res) {
     belongs_to: req.body.user_account
   }
 
-  const response = await taskServices.createTask(email, taskData, token);
+  const response = await taskServices.createTask(taskData);
 
   return res
     .status(response.httpStatus)
@@ -37,9 +35,12 @@ async function deleteTask(req, res) {
 
 
 async function getTasks(req, res) {
+  const { authorization } = req.headers;
+  const response = await taskServices.getAll(authorization);
+
   return res
-    .status(200)
-    .json({ msg: "ok" });
+    .status(response.httpStatus)
+    .json(response.body);
 }
 
 

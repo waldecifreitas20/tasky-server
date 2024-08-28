@@ -1,22 +1,41 @@
 const taskRepo = require("../repositories/task.repository");
 const { responseMessage, errorResponse } = require("../../utils/messages");
+const { extractToken } = require("../../utils/jwt");
 
-async function createTask(userEmail, taskData, token) {
+async function createTask(taskData) {
   try {
-    await taskRepo.createTask(userEmail, taskData);
+    await taskRepo.createTask(taskData);
 
     return responseMessage(200, "task created");
   } catch (error) {
     console.log(error);
 
-    return responseMessage(502,
+    return errorResponse(502,
       "Several Error",
-      { details: "Task creation has failed" }
+      { message: "Task creation has failed" }
     );
+  }
+}
+
+
+async function getAll(token) {
+
+  try {
+    const hash = token.split(" ")[1]
+    const { email } = extractToken(hash);
+
+    const tasks = await taskRepo.getTasksByUser(email);
+    console.log(tasks);
+    
+    return responseMessage(200, undefined, { tasks });
+  } catch (error) {
+    console.log(error);
+    
   }
 }
 
 
 module.exports = {
   createTask,
+  getAll
 }

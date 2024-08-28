@@ -15,7 +15,7 @@ const hasRequiredParams = task => {
     return false
   }
 
-  if (task.date.charAt(2) != "-" || task.date.charAt(5) != "-") {
+  if (task.date.charAt(4) != "-" || task.date.charAt(7) != "-") {
     return false;
   }
 
@@ -32,14 +32,7 @@ const isSameEmail = (token, email) => {
 }
 
 
-function checkTaskParams(req, res, next) {
-  const email = req.body.user_account;
-  const token = req.headers.authorization.split(" ")[1];
-
-  if (isInvalidEmail(email) || !isSameEmail(token, email)) {
-    return sendErrorResponse(res, 400, { error: "invalid account informed" })
-  }
-
+function checkRequiredParams(req, res, next) {
   if (!hasRequiredParams(req.body.task)) {
     return sendErrorResponse(res, 400, {
       error: "missing required params",
@@ -50,7 +43,19 @@ function checkTaskParams(req, res, next) {
   return next();
 }
 
+function checkCredentials(req, res, next) {
+  const email = req.body.user_account;
+  const token = req.headers.authorization.split(" ")[1];
+
+  
+  if (isInvalidEmail(email) || !isSameEmail(token, email)) {
+    return sendErrorResponse(res, 400, { error: "invalid account informed" })
+  }
+
+  return next();
+}
 
 module.exports = {
-  checkTaskParams,
+  checkRequiredParams,
+  checkCredentials
 }
