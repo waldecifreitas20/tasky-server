@@ -1,5 +1,4 @@
-const getPath = require("path").resolve;
-const { signUp } = require("../requester");
+const { signUp } = require("../api");
 
 
 describe("It should test sign up process", () => {
