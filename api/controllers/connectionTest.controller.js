@@ -1,5 +1,7 @@
 async function connectionTestController(req, res) {
-  return res.status(200).send({ message: "Api is accepting connections" });
+  return res
+    .status(200)
+    .json({ message: "Api is accepting connections" });
 }
 
 module.exports = {

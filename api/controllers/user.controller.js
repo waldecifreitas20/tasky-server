@@ -13,14 +13,14 @@ async function signUpUser(req, res) {
 
     return res
       .status(response.httpStatus)
-      .send(response.body);
+      .json(response.body);
 
   } catch (error) {
     console.error(error);
 
     return res
       .status(500)
-      .send({ error: "Unexpected error occurred. Try again later" });
+      .json({ error: "Unexpected error occurred. Try again later" });
   }
 
 }
@@ -29,7 +29,7 @@ async function signUpUser(req, res) {
 async function checkToken(req, res) {
   return res
     .status(200)
-    .send({ message: "token is valid" })
+    .json({ message: "token is valid" })
 }
 
 
@@ -40,14 +40,14 @@ async function loginUser(req, res) {
 
     return res
       .status(response.httpStatus)
-      .send(response.body);
+      .json(response.body);
 
   } catch (error) {
     console.error(error);
 
     return res
       .status(500)
-      .send({ error: "Unexpected error occurred. Try again later" });
+      .json({ error: "Unexpected error occurred. Try again later" });
   }
 }
 

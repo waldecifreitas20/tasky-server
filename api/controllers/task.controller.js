@@ -18,28 +18,28 @@ async function createTask(req, res) {
 
   return res
     .status(response.httpStatus)
-    .send(response.body);
+    .json(response.body);
 }
 
 
 async function updateTask(req, res) {
   return res
     .status(200)
-    .send({ msg: "ok" });
+    .json({ msg: "ok" });
 }
 
 
 async function deleteTask(req, res) {
   return res
     .status(200)
-    .send({ msg: "ok" });
+    .json({ msg: "ok" });
 }
 
 
 async function getTasks(req, res) {
   return res
     .status(200)
-    .send({ msg: "ok" });
+    .json({ msg: "ok" });
 }
 
 

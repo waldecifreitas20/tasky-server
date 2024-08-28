@@ -29,7 +29,7 @@ const errorResponse = (httpStatus, error, details) => {
 const sendErrorResponse = (res, httpStatus, { error, message }) => {
   return res
     .status(httpStatus)
-    .send({ error, message })
+    .json({ error, message })
 }
 
 
