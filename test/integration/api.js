@@ -1,11 +1,13 @@
 const getPath = require("path").resolve;
 
 const { http } = require("./requester");
-const { createTaskRoute } = require(getPath("routes/app.routes.js")).task;
 const { loginRoute } = require(getPath("routes/app.routes.js")).user;
 const { checkTokenRoute } = require(getPath("routes/app.routes.js")).user;
 
+const { createTaskRoute } = require(getPath("routes/app.routes.js")).task;
+const { allTasksRoute } = require(getPath("routes/app.routes.js")).task;
 
+/* USERS */
 async function checkToken(token) {
   return await http
     .get(`/user${checkTokenRoute}`)
@@ -23,13 +25,6 @@ async function signUp(username, email, password) {
     .send({ username, email, password })
 }
 
-async function createTask(token, body) {
-  return await http
-    .post(`/tasks${createTaskRoute}`)
-    .set("authorization", token)
-    .send(body)
-}
-
 async function generateUser() {
   const username = `user-${Math.random()}`;
   const email = `test-${username}@email.com`;
@@ -44,11 +39,42 @@ async function generateUser() {
   return { username, email, password, authorization }
 }
 
+/* TASKS */
+async function autoCreateTask(token, email) {
+  return await createTask(token, {
+    user_account: email,
+    task: {
+      name: "lalala",
+      desc: "none",
+      date: "2020-01-20",
+      hour: "",
+      full_day: true,
+    }
+  });
+}
+
+async function createTask(token, body) {
+  return await http
+    .post(`/tasks${createTaskRoute}`)
+    .set("authorization", token)
+    .send(body)
+}
+
+async function getTasks(token) {
+  return await http
+    .get(`/tasks${allTasksRoute}`)
+    .set("authorization", token)
+    .send();
+}
+
+
 
 module.exports = {
   signUp,
   login,
   createTask,
   generateUser,
-  checkToken
+  checkToken,
+  getTasks,
+  autoCreateTask
 }
