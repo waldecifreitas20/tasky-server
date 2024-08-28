@@ -26,11 +26,16 @@ async function getAll(token) {
 
     const tasks = await taskRepo.getTasksByUser(email);
     console.log(tasks);
-    
+
     return responseMessage(200, undefined, { tasks });
   } catch (error) {
     console.log(error);
-    
+
+    return errorResponse(502,
+      "Several Error",
+      { message: "Cannot get task by now. Unknown error has been occurred" }
+    );
+
   }
 }
 
