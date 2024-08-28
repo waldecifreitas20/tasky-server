@@ -11,6 +11,11 @@ async function signUpUser(req, res) {
 
     const response = await userServices.createUser(userData);
 
+    res.cookie("authorization", response.body.authorization, {
+      maxAge: 3600 * 1000, // 1 hour
+      httpOnly: true
+    });
+    
     return res
       .status(response.httpStatus)
       .json(response.body);
@@ -37,6 +42,11 @@ async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
     const response = await userServices.login(email, password);
+
+    res.cookie("authorization", response.body.authorization, {
+      maxAge: 3600 * 1000, // 1 hour
+      httpOnly: true
+    });
 
     return res
       .status(response.httpStatus)
