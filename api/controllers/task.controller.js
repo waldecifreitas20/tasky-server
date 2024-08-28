@@ -15,7 +15,6 @@ async function createTask(req, res) {
   }
 
   const response = await taskServices.createTask(email, taskData, token);
-  console.log(response);
 
   return res
     .status(response.httpStatus)
