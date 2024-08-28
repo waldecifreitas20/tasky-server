@@ -13,7 +13,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
         desc: "none",
         date: "06-05-2055",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
@@ -31,7 +31,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
         desc: "none",
         date: "06-05-2055",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
@@ -49,7 +49,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
         desc: "none",
         date: "06-05-2055",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
@@ -67,7 +67,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
         name: "lalala",
         desc: "none",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
@@ -76,7 +76,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
 
   });
 
-  test("Try to create new task without hour and whole_day param", async () => {
+  test("Try to create new task without hour and full_day param", async () => {
     const { email, authorization } = await generateUser();
 
     const requestBody = {
@@ -104,7 +104,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
         desc: "none",
         date: "06-05-2055",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
@@ -124,12 +124,12 @@ describe("It tests unexpected behavior for route that creates a new task into da
         desc: "none",
         date: "06-05-2055",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
     const { status } = await createTask(fakeToken, requestBody);
-    expect(status).toBe(400);
+    expect(status).toBe(401);
 
   });
 
@@ -143,12 +143,12 @@ describe("It tests unexpected behavior for route that creates a new task into da
         desc: "none",
         date: "06-05-2055",
         hour: "",
-        whole_day: true,
+        full_day: true,
       }
     }
 
     const { status } = await createTask(authorization, requestBody);
-    expect(status).toBe(401);
+    expect(status).toBe(400);
 
   });
 
