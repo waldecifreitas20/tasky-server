@@ -10,7 +10,7 @@ async function createTask(req, res) {
     description: task.desc,
     date: task.date,
     hour: task.hour,
-    is_all_day: task.whole_day | false,
+    is_all_day: task.full_day | false,
     belongs_to: req.body.user_account
   }
 

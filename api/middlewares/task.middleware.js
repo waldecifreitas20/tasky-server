@@ -19,7 +19,7 @@ const hasRequiredParams = task => {
     return false;
   }
 
-  if (!task.hour && !task.whole_day) {
+  if (!task.hour && !task.full_day) {
     return false;
   }
 
@@ -43,7 +43,7 @@ function checkTaskParams(req, res, next) {
   if (!hasRequiredParams(req.body.task)) {
     return sendErrorResponse(res, 400, {
       error: "missing required params",
-      message: `Required params are $name $date. $hour and $whole_day must not be both null`
+      message: `Required params are $name $date. $hour and $full_day must not be both null`
     });
   }
 
