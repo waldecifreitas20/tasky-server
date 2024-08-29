@@ -25,7 +25,6 @@ async function getAll(token) {
     const { email } = extractToken(hash);
 
     const tasks = await taskRepo.getTasksByUser(email);
-    console.log(tasks);
 
     return responseMessage(200, undefined, { tasks });
   } catch (error) {
