@@ -10,5 +10,6 @@ module.exports = {
     updateTaskRoute: "/update",
     deleteTaskRoute: "/delete",
     allTasksRoute: "/all",
-  }
+  },
+  notFoundRoute : "/*",
 }
