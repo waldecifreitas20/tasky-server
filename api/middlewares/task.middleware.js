@@ -32,30 +32,37 @@ const isSameEmail = (token, email) => {
 }
 
 
-function checkRequiredParams(req, res, next) {
-  if (!hasRequiredParams(req.body.task)) {
-    return sendErrorResponse(res, 400, {
-      error: "missing required params",
-      message: `Required params are $name $date. $hour and $full_day must not be both null`
-    });
-  }
-
-  return next();
-}
-
-function checkCredentials(req, res, next) {
-  const email = req.body.user_account;
-  const token = req.headers.authorization.split(" ")[1];
-
-  
-  if (isInvalidEmail(email) || !isSameEmail(token, email)) {
-    return sendErrorResponse(res, 400, { error: "invalid account informed" })
-  }
-
-  return next();
-}
-
 module.exports = {
-  checkRequiredParams,
-  checkCredentials
+  checkRequiredParams: (req, res, next) => {
+    if (!hasRequiredParams(req.body.task)) {
+      return sendErrorResponse(res, 400, {
+        error: "missing required params",
+        message: `Required params are $name $date. $hour and $full_day must not be both null`
+      });
+    }
+
+    return next();
+  },
+
+  checkCredentials: (req, res, next) => {
+    const email = req.body.user_account;
+    const token = req.headers.authorization.split(" ")[1];
+
+
+    if (isInvalidEmail(email) || !isSameEmail(token, email)) {
+      return sendErrorResponse(res, 400, { error: "invalid account informed" })
+    }
+
+    return next();
+  },
+
+  checkDeleteId: (req, res, next) => {
+    const id = req.params.id;
+
+    if (!id || isNaN(id)) {
+      return sendErrorResponse(res, 400, {error: "Invalid id sent"})      
+    }
+
+    next();
+  }
 }

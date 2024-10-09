@@ -2,7 +2,7 @@ const taskRouter = require("express").Router();
 
 const { task } = require("./app.routes");
 const { checkUserToken } = require("../api/middlewares/user.middleware");
-const { checkRequiredParams, checkCredentials } = require("../api/middlewares/task.middleware");
+const { checkRequiredParams, checkCredentials, checkDeleteId } = require("../api/middlewares/task.middleware");
 const controllers = require("../api/controllers/task.controller");
 
 
@@ -32,7 +32,7 @@ module.exports = app => {
 
   taskRouter.delete(
     task.deleteTaskRoute,
-    checkUserToken,
+    [checkUserToken, checkDeleteId],
     controllers.deleteTask
   );
 

@@ -8,8 +8,8 @@ module.exports = {
   task: {
     createTaskRoute: "/create",
     updateTaskRoute: "/update",
-    deleteTaskRoute: "/delete",
+    deleteTaskRoute: "/delete/:id",
     allTasksRoute: "/all",
   },
-  notFoundRoute : "/*",
+  notFoundRoute: "/*",
 }
