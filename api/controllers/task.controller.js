@@ -28,9 +28,13 @@ async function updateTask(req, res) {
 
 
 async function deleteTask(req, res) {
+  const {id} = req.params;
+
+  const response = await taskServices.deleteTask(id);
+
   return res
-    .status(200)
-    .json({ msg: "ok" });
+    .status(response.httpStatus)
+    .json(response.body);
 }
 
 

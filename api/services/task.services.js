@@ -12,7 +12,7 @@ async function createTask(taskData) {
 
     return errorResponse(502,
       "Several Error",
-      { message: "Task creation has failed" }
+      { error: "Task creation has failed" }
     );
   }
 }
@@ -32,14 +32,27 @@ async function getAll(token) {
 
     return errorResponse(502,
       "Several Error",
-      { message: "Cannot get task by now. Unknown error has been occurred" }
+      { error: "Cannot get task by now. Unknown error has been occurred" }
     );
 
+  }
+}
+
+async function deleteTask(id) {
+  try {
+    await taskRepo.deleteTask(id);
+    
+    return responseMessage(204);
+  } catch (error) {
+    console.log(error);
+
+    return errorResponse(502, "Several Error");
   }
 }
 
 
 module.exports = {
   createTask,
+  deleteTask,
   getAll
 }

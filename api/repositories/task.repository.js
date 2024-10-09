@@ -11,7 +11,13 @@ async function getTasksByUser(userPk) {
 }
 
 
+async function deleteTask(id) {
+  return await TaskModel.delete(id);
+}
+
+
 module.exports = {
+  deleteTask,
   createTask,
   getTasksByUser
 }

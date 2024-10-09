@@ -11,8 +11,6 @@ class TaskModel {
     is_all_day,
     belongs_to
   }) {
-
-    console.log(date);
     
     return await SQL`
       INSERT INTO tasks( 
@@ -32,7 +30,6 @@ class TaskModel {
       );`;
   }
 
-
   async getByFk(email) {
     return await SQL`
       SELECT 
@@ -49,7 +46,12 @@ class TaskModel {
 
   }
 
-
+  async delete(taskId) {
+    return await SQL`
+      DELETE FROM tasks
+      WHERE tasks.task_id = ${taskId.toString()}
+    `;
+  }
 }
 
 
