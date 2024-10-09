@@ -30,7 +30,7 @@ class TaskModel {
       );`;
   }
 
-  async getByFk(email) {
+  async getByOwner(email) {
     return await SQL`
       SELECT 
         task_id AS id, 
@@ -46,9 +46,18 @@ class TaskModel {
 
   }
 
+  async getById(id) {
+    return await SQL`
+      SELECT *
+      FROM tasks
+      WHERE tasks.task_id = ${id}
+    `;
+  }
+
   async delete(taskId) {
     return await SQL`
-      DELETE FROM tasks
+      DELETE 
+      FROM tasks
       WHERE tasks.task_id = ${taskId.toString()}
     `;
   }

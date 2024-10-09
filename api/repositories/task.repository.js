@@ -7,9 +7,12 @@ async function createTask(task) {
 }
 
 async function getTasksByUser(userPk) {
-  return await TaskModel.getByFk(userPk);
+  return await TaskModel.getByOwner(userPk);
 }
 
+async function getTaskById(id) {
+  return await TaskModel.getById(id);
+}
 
 async function deleteTask(id) {
   return await TaskModel.delete(id);
@@ -19,5 +22,6 @@ async function deleteTask(id) {
 module.exports = {
   deleteTask,
   createTask,
+  getTaskById,
   getTasksByUser
 }

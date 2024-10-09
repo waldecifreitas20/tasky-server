@@ -40,8 +40,14 @@ async function getAll(token) {
 
 async function deleteTask(id) {
   try {
+    const task = await taskRepo.getTaskById(id);
+    const hasTask = task;
+
+    if (!hasTask) {
+      return errorResponse(404, "Task not found");
+    }
+
     await taskRepo.deleteTask(id);
-    
     return responseMessage(204);
   } catch (error) {
     console.log(error);
