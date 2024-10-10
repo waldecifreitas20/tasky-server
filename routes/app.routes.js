@@ -7,7 +7,7 @@ module.exports = {
   },
   task: {
     createTaskRoute: "/create",
-    updateTaskRoute: "/update",
+    updateTaskRoute: "/update/:id",
     deleteTaskRoute: "/delete/:id",
     allTasksRoute: "/all",
   },

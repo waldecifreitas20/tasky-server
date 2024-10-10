@@ -2,7 +2,7 @@ const taskRouter = require("express").Router();
 
 const { task } = require("./app.routes");
 const { checkUserToken } = require("../api/middlewares/user.middleware");
-const { checkRequiredParams, checkCredentials, checkDeleteId } = require("../api/middlewares/task.middleware");
+const { checkRequiredParams, checkCredentials, checkTaskId } = require("../api/middlewares/task.middleware");
 const controllers = require("../api/controllers/task.controller");
 
 
@@ -26,13 +26,13 @@ module.exports = app => {
 
   taskRouter.patch(
     task.updateTaskRoute,
-    checkUserToken,
+    [checkUserToken, checkTaskId],
     controllers.updateTask
   );
 
   taskRouter.delete(
     task.deleteTaskRoute,
-    [checkUserToken, checkDeleteId],
+    [checkUserToken, checkTaskId],
     controllers.deleteTask
   );
 

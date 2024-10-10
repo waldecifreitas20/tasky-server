@@ -1,7 +1,7 @@
 const taskServices = require("../services/task.services");
 
 async function createTask(req, res) {
-  const task = req.body.task;
+  const { task } = req.body;
 
   const taskData = {
     task_name: task.name,
@@ -19,16 +19,14 @@ async function createTask(req, res) {
     .json(response.body);
 }
 
-
 async function updateTask(req, res) {
   return res
     .status(200)
     .json({ msg: "ok" });
 }
 
-
 async function deleteTask(req, res) {
-  const {id} = req.params;
+  const { id } = req.params;
 
   const response = await taskServices.deleteTask(id);
 
@@ -36,7 +34,6 @@ async function deleteTask(req, res) {
     .status(response.httpStatus)
     .json(response.body);
 }
-
 
 async function getTasks(req, res) {
   const { authorization } = req.headers;

@@ -56,7 +56,7 @@ module.exports = {
     return next();
   },
 
-  checkDeleteId: (req, res, next) => {
+  checkTaskId: (req, res, next) => {
     const id = req.params.id;
 
     if (!id || isNaN(id)) {
