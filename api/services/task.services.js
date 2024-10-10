@@ -17,7 +17,6 @@ async function createTask(taskData) {
   }
 }
 
-
 async function getAll(token) {
 
   try {
@@ -41,8 +40,8 @@ async function getAll(token) {
 async function deleteTask(id) {
   try {
     const task = await taskRepo.getTaskById(id);
-    const hasTask = task;
-
+    const hasTask = task.length !== 0;
+    
     if (!hasTask) {
       return errorResponse(404, "Task not found");
     }

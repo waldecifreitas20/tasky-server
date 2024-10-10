@@ -1,8 +1,6 @@
 const { TaskModel } = require("../models/Task.js")
 
-async function createTask(task) {
-  console.log(task);
-  
+async function createTask(task) {  
   await TaskModel.create(task);
 }
 
