@@ -4,8 +4,7 @@ const { http } = require("./requester");
 const { loginRoute } = require(getPath("routes/app.routes.js")).user;
 const { checkTokenRoute } = require(getPath("routes/app.routes.js")).user;
 
-const { createTaskRoute } = require(getPath("routes/app.routes.js")).task;
-const { allTasksRoute } = require(getPath("routes/app.routes.js")).task;
+const { createTaskRoute, allTasksRoute } = require(getPath("routes/app.routes.js")).task;
 
 /* USERS */
 async function checkToken(token) {
@@ -57,7 +56,13 @@ async function createTask(token, body) {
   return await http
     .post(`/tasks${createTaskRoute}`)
     .set("authorization", token)
-    .send(body)
+    .send(body);
+}
+
+async function deleteTask(token, taskId) {
+  return await http
+    .delete(`/tasks/delete/${taskId}`)
+    .set("authorization", token);
 }
 
 async function getTasks(token) {
@@ -67,14 +72,20 @@ async function getTasks(token) {
     .send();
 }
 
-
+async function getRandomTask(token) {
+  const { body } = await getTasks(token);
+ 
+  return body.tasks[0];
+}
 
 module.exports = {
+  generateUser,
   signUp,
   login,
-  createTask,
-  generateUser,
   checkToken,
+  createTask,
+  autoCreateTask,
   getTasks,
-  autoCreateTask
+  getRandomTask,
+  deleteTask,
 }
