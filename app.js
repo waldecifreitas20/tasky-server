@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 app.use(cors());
 
-require('./routes/connectionTest.route')(app);
+require('./routes/connection.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/task.routes')(app);
 require('./routes/notFound.routes')(app);
