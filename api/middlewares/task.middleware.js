@@ -60,9 +60,40 @@ module.exports = {
     const id = req.params.id;
 
     if (!id || isNaN(id)) {
-      return sendErrorResponse(res, 400, {error: "Invalid id sent"})      
+      return sendErrorResponse(res, 400, { error: "Invalid id sent" })
     }
 
     next();
+  },
+
+  checkBodyTask: (req, res, next) => {
+    const task = req.body;
+    const errorResponse = {
+      error: "No valid params has been sent",
+      message: "at least one of these following params " +
+        "is required: name, desc, date, hour or full_day "
+    };
+
+    if (!task) {
+      return sendErrorResponse(res, 400, errorResponse);
+    }  
+
+    if (!task.name && !task.desc &&
+      !task.hour && !task.full_day && !task.date
+    ) {
+      return sendErrorResponse(res, 400, errorResponse);
+    }
+
+    if (!!task.date) {      
+      const isInvalidDate = task.date.length !== 10 ||
+      task.date.charAt(4) != "-" ||
+      task.date.charAt(7) != "-";
+      
+      if (isInvalidDate) {
+        return sendErrorResponse(res, 400, errorResponse);
+      }
+    }
+
+    return next();
   }
 }

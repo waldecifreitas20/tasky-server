@@ -2,7 +2,7 @@ const taskRouter = require("express").Router();
 
 const { task } = require("./app.routes");
 const { checkUserToken } = require("../api/middlewares/user.middleware");
-const { checkRequiredParams, checkCredentials, checkTaskId } = require("../api/middlewares/task.middleware");
+const { checkRequiredParams, checkCredentials, checkTaskId, checkBodyTask } = require("../api/middlewares/task.middleware");
 const controllers = require("../api/controllers/task.controller");
 
 
@@ -26,7 +26,7 @@ module.exports = app => {
 
   taskRouter.patch(
     task.updateTaskRoute,
-    [checkUserToken, checkTaskId],
+    [checkUserToken, checkTaskId, checkBodyTask],
     controllers.updateTask
   );
 
