@@ -20,14 +20,28 @@ async function createTask(req, res) {
 }
 
 async function updateTask(req, res) {
+
+  const { id } = req.params;
+  const task = req.body;
+
+  const taskData = {
+    task_name: task.name,
+    description: task.desc,
+    date: task.date,
+    hour: task.hour,
+    is_all_day: task.full_day,
+    belongs_to: req.body.user_account
+  }
+  
+  const response = await taskServices.updateTask(id, taskData);
+
   return res
-    .status(200)
-    .json({ msg: "ok" });
+    .status(response.httpStatus)
+    .json(response.body);
 }
 
 async function deleteTask(req, res) {
   const { id } = req.params;
-
   const response = await taskServices.deleteTask(id);
 
   return res

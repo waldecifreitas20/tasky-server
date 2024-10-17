@@ -2,6 +2,13 @@ const taskRepo = require("../repositories/task.repository");
 const { responseMessage, errorResponse } = require("../../utils/messages");
 const { extractToken } = require("../../utils/jwt");
 
+const hasTask = async (id) => {
+  const task = await taskRepo.getTaskById(id);
+  const hasTask = task.length !== 0;
+
+  return hasTask;
+}
+
 async function createTask(taskData) {
   try {
     await taskRepo.createTask(taskData);
@@ -39,10 +46,7 @@ async function getAll(token) {
 
 async function deleteTask(id) {
   try {
-    const task = await taskRepo.getTaskById(id);
-    const hasTask = task.length !== 0;
-    
-    if (!hasTask) {
+    if (!await hasTask(id)) {
       return errorResponse(404, "Task not found");
     }
 
@@ -55,9 +59,39 @@ async function deleteTask(id) {
   }
 }
 
+async function updateTask(taskId, taskData) {
+  try {
+    if (!await hasTask(taskId)) {
+      return errorResponse(404, "Task not found");
+    }
+  
+    const getValidFields = () => {
+      const entries = Object.entries(taskData);
+      const validFields = {};
+
+      for (const [key, value] of entries) {
+        if (!!value) {
+          validFields[key] = value;
+        }
+      }
+
+      return validFields;
+    }
+    
+    await taskRepo.updateTask(taskId, getValidFields());
+    return responseMessage(200, "Ok");
+  } catch (error) {
+    console.log(error);
+    return responseMessage(400, "Deu merda");
+    
+  }
+
+}
+
 
 module.exports = {
   createTask,
   deleteTask,
-  getAll
+  getAll,
+  updateTask
 }

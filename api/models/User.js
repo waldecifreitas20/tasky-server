@@ -1,16 +1,16 @@
 const getPath = require("path").resolve;
-const SQL = require(getPath("database/database.js"))
+const { sql } = require(getPath("database/database.js"))
 
 class UserModel {
 
   async getByPk(email) {
-    return await SQL`
+    return await sql`
     SELECT * FROM users WHERE users.email = ${email};
   `;
   }
 
   async create(userData) {
-    return await SQL`
+    return await sql`
       INSERT INTO 
         users (username, email, password) 
       VALUES 

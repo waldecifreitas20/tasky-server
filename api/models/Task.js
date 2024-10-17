@@ -1,5 +1,5 @@
 const getPath = require("path").resolve;
-const SQL = require(getPath("database/database.js"));
+const { sql } = require('../../database/database.js');
 
 class TaskModel {
 
@@ -11,8 +11,8 @@ class TaskModel {
     is_all_day,
     belongs_to
   }) {
-    
-    return await SQL`
+
+    return await sql`
       INSERT INTO tasks( 
           task_name, 
           description,
@@ -31,7 +31,7 @@ class TaskModel {
   }
 
   async getByOwner(email) {
-    return await SQL`
+    return await sql`
       SELECT 
         task_id AS id, 
         task_name AS name,
@@ -47,20 +47,31 @@ class TaskModel {
   }
 
   async getById(id) {
-    return await SQL`
+    return await sql`
       SELECT *
       FROM tasks
-      WHERE tasks.task_id = ${id}
+      WHERE tasks.task_id = ${id};
     `;
   }
 
   async delete(taskId) {
-    return await SQL`
+    return await sql`
       DELETE 
       FROM tasks
-      WHERE tasks.task_id = ${taskId.toString()}
+      WHERE tasks.task_id = ${taskId.toString()};
     `;
   }
+
+  async update(taskId, updates) {
+    const columns = Object.keys(updates);
+    
+    return await sql`
+      UPDATE tasks
+      SET ${sql(updates, columns)}
+      WHERE task_id = ${taskId.toString()};
+    `;
+  }
+
 }
 
 
