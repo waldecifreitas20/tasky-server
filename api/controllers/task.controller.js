@@ -20,7 +20,6 @@ async function createTask(req, res) {
 }
 
 async function updateTask(req, res) {
-
   const { authorization } = req.headers;
   const { id } = req.params;
   const task = req.body;
@@ -34,7 +33,12 @@ async function updateTask(req, res) {
     belongs_to: req.body.user_account
   }
 
-  const response = await taskServices.updateTask(id, taskData, authorization);
+  const response = await taskServices
+    .updateTask(
+      id,
+      taskData,
+      authorization
+    );
 
   return res
     .status(response.httpStatus)
@@ -43,7 +47,9 @@ async function updateTask(req, res) {
 
 async function deleteTask(req, res) {
   const { id } = req.params;
-  const response = await taskServices.deleteTask(id);
+  const { authorization } = req.headers;
+
+  const response = await taskServices.deleteTask(id, authorization);
 
   return res
     .status(response.httpStatus)
