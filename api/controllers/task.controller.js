@@ -5,9 +5,9 @@ async function createTask(req, res) {
 
   const taskData = {
     task_name: task.name,
-    description: task.desc,
+    description: task.desc | null,
     date: task.date,
-    hour: task.hour,
+    hour: task.hour | null,
     is_all_day: task.full_day | false,
     belongs_to: req.body.user_account
   }

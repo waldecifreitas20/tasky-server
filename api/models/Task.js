@@ -20,12 +20,12 @@ class TaskModel {
           is_all_day, 
           belongs_to
       ) VALUES (
-          ${task_name.toString()},
-          ${description.toString()},
-          ${date.toString()},
-          ${hour.toString()},
+          ${task_name},
+          ${description},
+          ${date},
+          ${hour},
           ${is_all_day},
-          ${belongs_to.toString()}  
+          ${belongs_to}  
       );`;
   }
 
@@ -39,7 +39,7 @@ class TaskModel {
         hour,
         is_all_day AS full_day 
       FROM tasks
-      WHERE tasks.belongs_to = ${email.toString()}
+      WHERE tasks.belongs_to = ${email}
       ORDER BY tasks.date DESC;
     `;
 
@@ -57,7 +57,7 @@ class TaskModel {
     return await sql`
       DELETE 
       FROM tasks
-      WHERE tasks.task_id = ${taskId.toString()};
+      WHERE tasks.task_id = ${taskId};
     `;
   }
 
@@ -67,8 +67,8 @@ class TaskModel {
     return await sql`
       UPDATE tasks
       SET ${sql(updates, columns)}
-      WHERE task_id = ${taskId.toString()}
-      AND belongs_to = ${owner.toString()};
+      WHERE task_id = ${taskId}
+      AND belongs_to = ${owner};
     `;
   }
 
