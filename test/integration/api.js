@@ -72,6 +72,13 @@ async function getTasks(token) {
     .send();
 }
 
+async function updateTask(token, taskId, updates) {
+  return await http
+    .patch(`/tasks/update/${taskId}`)
+    .set("authorization", token)
+    .send(updates);
+}
+
 async function getRandomTask(token) {
   const { body } = await getTasks(token);
  
@@ -88,4 +95,5 @@ module.exports = {
   getTasks,
   getRandomTask,
   deleteTask,
+  updateTask,
 }
