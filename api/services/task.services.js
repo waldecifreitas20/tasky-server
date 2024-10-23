@@ -9,6 +9,11 @@ const hasTask = async (id) => {
   return hasTask;
 }
 
+const getUserFromToken = (token) => {
+  const tokenWithoutBearer = token.split(" ")[1]
+  return extractToken(tokenWithoutBearer);
+}
+
 async function createTask(taskData) {
   try {
     await taskRepo.createTask(taskData);
@@ -59,12 +64,16 @@ async function deleteTask(id) {
   }
 }
 
-async function updateTask(taskId, taskData) {
+async function updateTask(taskId, taskData, token) {
   try {
-    if (!await hasTask(taskId)) {
+    const { email } = getUserFromToken(token);
+
+    // CHECK TASK EXISTENCE BEFORE TRY TO UPDATE
+    if (!await taskRepo.hasTask(email, taskId)) {
       return errorResponse(404, "Task not found");
     }
-  
+    
+    // FILTER VALID FILTER FROM
     const getValidFields = () => {
       const entries = Object.entries(taskData);
       const validFields = {};
@@ -74,16 +83,15 @@ async function updateTask(taskId, taskData) {
           validFields[key] = value;
         }
       }
-
       return validFields;
     }
-    
-    await taskRepo.updateTask(taskId, getValidFields());
+    await taskRepo.updateTask(taskId, email, getValidFields());
+
     return responseMessage(200, "Ok");
   } catch (error) {
     console.log(error);
     return responseMessage(400, "Deu merda");
-    
+
   }
 
 }

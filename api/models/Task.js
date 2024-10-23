@@ -1,4 +1,3 @@
-const getPath = require("path").resolve;
 const { sql } = require('../../database/database.js');
 
 class TaskModel {
@@ -62,14 +61,28 @@ class TaskModel {
     `;
   }
 
-  async update(taskId, updates) {
+  async update(taskId, owner, updates) {
     const columns = Object.keys(updates);
-    
+
     return await sql`
       UPDATE tasks
       SET ${sql(updates, columns)}
-      WHERE task_id = ${taskId.toString()};
+      WHERE task_id = ${taskId.toString()}
+      AND belongs_to = ${owner.toString()};
     `;
+  }
+
+  async isOwner(taskId, userEmail) {
+    const result = await sql`
+    SELECT *
+    FROM users
+    INNER JOIN tasks
+    ON tasks.belongs_to = users.email
+    WHERE tasks.belongs_to = ${userEmail}
+    AND tasks.task_id = ${taskId};
+    `;
+
+    return result.length !== 0;
   }
 
 }

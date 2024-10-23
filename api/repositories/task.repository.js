@@ -16,8 +16,12 @@ async function deleteTask(id) {
   return await TaskModel.delete(id);
 }
 
-async function updateTask(taskId, updates) {
-  return await TaskModel.update(taskId, updates);
+async function updateTask(taskId, owner, updates) {
+  return await TaskModel.update(taskId, owner, updates);
+}
+
+async function hasTask(userPk, taskId) {
+  return await TaskModel.isOwner(taskId, userPk);
 }
 
 
@@ -26,5 +30,6 @@ module.exports = {
   createTask,
   getTaskById,
   getTasksByUser,
-  updateTask
+  updateTask,
+  hasTask,
 }

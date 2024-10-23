@@ -21,6 +21,7 @@ async function createTask(req, res) {
 
 async function updateTask(req, res) {
 
+  const { authorization } = req.headers;
   const { id } = req.params;
   const task = req.body;
 
@@ -32,8 +33,8 @@ async function updateTask(req, res) {
     is_all_day: task.full_day,
     belongs_to: req.body.user_account
   }
-  
-  const response = await taskServices.updateTask(id, taskData);
+
+  const response = await taskServices.updateTask(id, taskData, authorization);
 
   return res
     .status(response.httpStatus)
