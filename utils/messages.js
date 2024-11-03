@@ -6,7 +6,7 @@ const throwError = (statusCode, name, message) => {
   }
 }
 
-const responseMessage = (httpStatus, message = '', options = {}) => {
+const responseMessage = (httpStatus, message, options = {}) => {
   return {
     httpStatus,
     body: {

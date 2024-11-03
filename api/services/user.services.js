@@ -49,7 +49,7 @@ async function login(email, password) {
 
     return responseMessage(
       200, undefined,
-      { authorization: token }
+      { username: user.username, authorization: token }
     );
 
   } catch (error) {
