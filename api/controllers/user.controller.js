@@ -15,7 +15,7 @@ async function signUpUser(req, res) {
       maxAge: 3600 * 1000, // 1 hour
       httpOnly: true
     });
-    
+
     return res
       .status(response.httpStatus)
       .json(response.body);
@@ -40,14 +40,16 @@ async function checkToken(req, res) {
 
 async function loginUser(req, res) {
   try {
-    const { email, password } = req.body;
-    const response = await userServices.login(email, password);
-
-    res.cookie("authorization", response.body.authorization, {
-      maxAge: 3600 * 1000, // 1 hour
-      httpOnly: true
-    });
-
+    const loginType = req.headers.login_type;
+    let response;
+    
+    if (loginType === 'g-account') {
+      response = await userServices.loginWithGoogle(req.headers.authorization)
+    } else {
+      const { email, password } = req.body;
+      response = await userServices.login(email, password);
+    }
+    
     return res
       .status(response.httpStatus)
       .json(response.body);

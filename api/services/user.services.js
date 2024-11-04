@@ -1,5 +1,7 @@
 const getPath = require("path").resolve;
 
+const { extractToken } = require("../../utils/jwt");
+const { verifyAccount } = require("../external/googleAuth");
 const userRepo = require("../repositories/user.respository");
 
 const { generateToken } = require(getPath("utils/jwt"));
@@ -59,7 +61,19 @@ async function login(email, password) {
     return errorResponse(502, "Several Error", "Create user process has failed");
   }
 }
+
+async function loginWithGoogle(googleToken) {
+  const accountCheck = await verifyAccount(googleToken);
+
+  if (!accountCheck.isValidToken) {
+    return errorResponse(401, "Invalid google account");
+  }
+
+  
+  return responseMessage(200, undefined, { msg: 'vai se ferrar' });
+}
 module.exports = {
   createUser,
-  login
+  login,
+  loginWithGoogle
 }
