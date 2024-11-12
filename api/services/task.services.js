@@ -1,4 +1,5 @@
 const taskRepo = require("../repositories/task.repository");
+const userRepo = require("../repositories/user.repository");
 const { responseMessage, errorResponse } = require("../../utils/messages");
 const { extractToken } = require("../../utils/jwt");
 
@@ -10,9 +11,12 @@ const getUserFromToken = (token) => {
 
 /* ================ SERVICES ================*/
 
-async function createTask(taskData) {
+async function createTask(taskData, token) {
   try {
-    await taskRepo.createTask(taskData);
+    const { email } = getUserFromToken(token);
+    const { user_id } = await userRepo.getUserByEmail(email);
+
+    await taskRepo.createTask(taskData, user_id);
 
     return responseMessage(200, "task created");
   } catch (error) {
@@ -56,7 +60,7 @@ async function deleteTask(taskId, token) {
   } catch (error) {
     console.log(error);
 
-    return errorResponse(502, 
+    return errorResponse(502,
       "Internal Error",
       { error: "Cannot delete task by now. Unknown error has been occurred" }
     );
@@ -91,7 +95,7 @@ async function updateTask(taskId, taskData, token) {
   } catch (error) {
     console.log(error);
 
-    return errorResponse(502, 
+    return errorResponse(502,
       "Internal Error",
       { error: "An error has been ocurred. Task has not been updated" }
     );

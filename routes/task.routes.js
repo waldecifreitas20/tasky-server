@@ -10,11 +10,7 @@ module.exports = app => {
 
   taskRouter.post(
     task.createTaskRoute,
-    [
-      checkUserToken,
-      checkCredentials,
-      checkRequiredParams
-    ],
+    [checkUserToken, checkRequiredParams],
     controllers.createTask
   );
 

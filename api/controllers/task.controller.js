@@ -1,18 +1,17 @@
 const taskServices = require("../services/task.services");
 
 async function createTask(req, res) {
-  const { task } = req.body;
-
+  const task = req.body;
+  const { authorization } = req.headers
   const taskData = {
     task_name: task.name,
-    description: task.desc | null,
+    description: task.desc || null,
     date: task.date,
-    hour: task.hour | null,
-    is_all_day: task.full_day | false,
-    belongs_to: req.body.user_account
+    hour: task.full_day? null : task.hour,
+    is_all_day: task.full_day || false,
   }
-
-  const response = await taskServices.createTask(taskData);
+  
+  const response = await taskServices.createTask(taskData, authorization);
 
   return res
     .status(response.httpStatus)
