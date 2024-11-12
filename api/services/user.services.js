@@ -37,7 +37,7 @@ async function createUser(userData) {
 
 async function login(email, password) {
   try {
-    const user = await userRepo.getUserByPk(email);
+    const user = await userRepo.getUserByEmail(email);
 
     const isSamePassword = bcrypt.checkPassword(user.password, password);
 
@@ -56,7 +56,7 @@ async function login(email, password) {
     if (error.code === "59123") {
       return errorResponse(401, "Invalid credentials");
     }
-    return errorResponse(502, "Several Error", "Create user process has failed");
+    return errorResponse(502, "Several Error", "Login attempt has failed");
   }
 }
 module.exports = {

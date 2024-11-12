@@ -1,12 +1,11 @@
-const { UserModel } = require("../models/User")
-const { throwError } = require("../../utils/messages");
+const { UserModel } = require("../models/User");
 
 async function createUser(userData) {
   return await UserModel.create(userData);
 }
 
-async function getUserByPk(email) {
-  const result = await UserModel.getByPk(email);
+async function getUserByEmail(email) {
+  const result = await UserModel.getByEmail(email);
 
   if (result.length == 0) {
     throw { code: "59123" };
@@ -17,5 +16,5 @@ async function getUserByPk(email) {
 
 module.exports = {
   createUser,
-  getUserByPk,
+  getUserByEmail,
 }
