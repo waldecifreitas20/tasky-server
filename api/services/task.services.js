@@ -9,14 +9,20 @@ const getUserFromToken = (token) => {
   return extractToken(tokenWithoutBearer);
 }
 
+const getUserId = async (token) => {
+  const { email } = getUserFromToken(token);
+  const { user_id } = await userRepo.getUserByEmail(email);
+
+  return user_id;
+}
+
 /* ================ SERVICES ================*/
 
 async function createTask(taskData, token) {
   try {
-    const { email } = getUserFromToken(token);
-    const { user_id } = await userRepo.getUserByEmail(email);
+    const userId  = await getUserId(token);
 
-    await taskRepo.createTask(taskData, user_id);
+    await taskRepo.createTask(taskData, userId);
 
     return responseMessage(200, "task created");
   } catch (error) {
@@ -31,9 +37,8 @@ async function createTask(taskData, token) {
 
 async function getAll(token) {
   try {
-    const { email } = getUserFromToken(token);
-
-    const tasks = await taskRepo.getTasksByUser(email);
+    const userId  = await getUserId(token);
+    const tasks = await taskRepo.getTasksByUser(userId);
 
     return responseMessage(200, undefined, { tasks });
   } catch (error) {

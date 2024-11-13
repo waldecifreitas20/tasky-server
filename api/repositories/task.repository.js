@@ -8,15 +8,15 @@ async function getTasksByUser(userPk) {
   return await TaskModel.getByOwner(userPk);
 }
 
-async function deleteTask(id, userPk) {
-  return await TaskModel.delete(id);
+async function deleteTask(taskId, userPk) {
+  return await TaskModel.delete(taskId, userPk);
 }
 
-async function updateTask(taskId, owner, updates) {
-  return await TaskModel.update(taskId, owner, updates);
+async function updateTask(taskId, userPk, updates) {
+  return await TaskModel.update(taskId, userPk, updates);
 }
 
-async function hasTask(userPk, taskId) {
+async function hasTask(taskId, userPk) {
   return await TaskModel.isOwner(taskId, userPk);
 }
 
