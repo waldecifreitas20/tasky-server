@@ -75,14 +75,14 @@ async function deleteTask(taskId, token) {
 
 async function updateTask(taskId, taskData, token) {
   try {
-    const { email } = getUserFromToken(token);
+    const userId  = await getUserId(token);
 
     // CHECK TASK EXISTENCE BEFORE TRY TO UPDATE
-    if (!await taskRepo.hasTask(email, taskId)) {
+    if (!await taskRepo.hasTask(taskId, userId)) {
       return errorResponse(404, "Task not found");
     }
 
-    // FILTER VALID FILTER FROM
+    // FILTER VALID FIELDS FROM SENT DATA
     const getValidFields = () => {
       const entries = Object.entries(taskData);
       const validFields = {};
@@ -95,7 +95,7 @@ async function updateTask(taskId, taskData, token) {
       return validFields;
     }
 
-    await taskRepo.updateTask(taskId, email, getValidFields());
+    await taskRepo.updateTask(taskId, userId, getValidFields());
 
     return responseMessage(200, "Ok");
   } catch (error) {
