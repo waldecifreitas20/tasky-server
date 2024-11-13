@@ -53,14 +53,15 @@ async function getAll(token) {
 
 async function deleteTask(taskId, token) {
   try {
-    const { email } = getUserFromToken(token);
+    const userId  = await getUserId(token);
+    const hasTask = await taskRepo.hasTask(taskId, userId);
 
-    // CHECK TASK EXISTENCE BEFORE TRY TO UPDATE
-    if (!await taskRepo.hasTask(email, taskId)) {
+    // CHECK TASK EXISTENCE BEFORE TRY TO DELETE
+    if (!hasTask) {
       return errorResponse(404, "Task not found");
     }
 
-    await taskRepo.deleteTask(taskId);
+    await taskRepo.deleteTask(taskId, userId);
     return responseMessage(204);
   } catch (error) {
     console.log(error);

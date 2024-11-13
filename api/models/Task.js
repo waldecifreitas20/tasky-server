@@ -72,13 +72,11 @@ class TaskModel {
     `;
   }
 
-  async isOwner(taskId, userEmail) {
+  async isOwner(taskId, userId) {
     const result = await sql`
     SELECT *
-    FROM users
-    INNER JOIN tasks
-    ON tasks.belongs_to = users.email
-    WHERE tasks.belongs_to = ${userEmail}
+    FROM tasks
+    WHERE tasks.belongs_to = ${userId}
     AND tasks.task_id = ${taskId};
     `;
 

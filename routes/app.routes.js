@@ -3,7 +3,8 @@ module.exports = {
   user: {
     signUpRoute: "/sign-up",
     checkTokenRoute: "/check-token",
-    loginRoute: "/login"
+    loginRoute: "/login",
+    googleAuthRoute: "/google-auth"
   },
   task: {
     createTaskRoute: "/create",

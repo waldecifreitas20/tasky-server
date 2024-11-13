@@ -25,7 +25,6 @@ async function checkUserSignUp(req, res, next) {
 }
 
 
-
 async function checkUserToken(req, res, next) {
   if (!req.headers.authorization) {
     return sendErrorResponse(res, 401, {
@@ -54,7 +53,6 @@ async function checkUserToken(req, res, next) {
 }
 
 
-
 function checkUserLogin(req, res, next) {
   if (!req.body) {
     return sendErrorResponse(res, 401, {
@@ -74,11 +72,23 @@ function checkUserLogin(req, res, next) {
   next();
 }
 
+function checkGoogleAuth(req, res, next) {
+  console.log(req.headers.authorization);
+  
+  if (!req.headers.authorization) {
+    return sendErrorResponse(res, 400, {
+      error: "No token provided"
+    });
+  }
+
+  return next();
+}
 
 
 module.exports = {
   checkUserSignUp,
   checkUserLogin,
   checkUserToken,
+  checkGoogleAuth,
 };
 

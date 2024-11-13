@@ -11,7 +11,8 @@ describe("It checks user trying to get their tasks from server ", () => {
     await autoCreateTask(authorization, email);
 
     const { status, body } = await getTasks(authorization);
-
+    console.log(status);
+    
     expect(status).toBe(200);
     expect(body.tasks.length).toBe(3);
   });

@@ -1,6 +1,6 @@
 const getPath = require("path").resolve;
 
-const userRepo = require("../repositories/user.respository");
+const userRepo = require("../repositories/user.repository");
 
 const { generateToken } = require(getPath("utils/jwt"));
 const { errorResponse, responseMessage } = require(getPath("utils/messages"));
@@ -59,7 +59,18 @@ async function login(email, password) {
     return errorResponse(502, "Several Error", "Login attempt has failed");
   }
 }
+
+async function loginWithGoogle(googleToken) {
+  try {
+    return responseMessage(200, "Success", { authorization: googleToken })
+  } catch (error) {
+
+  }
+}
+
+
 module.exports = {
   createUser,
-  login
+  login,
+  loginWithGoogle
 }
