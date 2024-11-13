@@ -8,8 +8,8 @@ const {
 
 describe("It tests unexpected behavior for route that creates a new task into database", () => {
 
-  test("1: Update all task data with success", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 1: Update all task data with success", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "lalala",
@@ -18,10 +18,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.name = "new name";
     task.desc = "new description";
@@ -35,8 +32,8 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(status).toBe(200);
   });
 
-  test("2: Update task name with success", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 2: Update task name with success", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "task",
@@ -44,10 +41,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.name = "new name";
 
@@ -58,8 +52,8 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(updatedTask.name).toBe(task.name);
   });
 
-  test("3: Update task description with success", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 3: Update task description with success", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "lalala",
@@ -68,10 +62,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.desc = "new description";
 
@@ -82,8 +73,8 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(updatedTask.desc).toBe(task.desc);
   });
 
-  test("4: Update task date with success", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 4: Update task date with success", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "lalala",
@@ -92,10 +83,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.date = "2023-07-01";
 
@@ -106,8 +94,8 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(updatedTask.date).toBe(task.date);
   });
 
-  test("5: Update task hour with success", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 5: Update task hour with success", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "lalala",
@@ -116,10 +104,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.full_day = false;
     task.hour = "03:45";
@@ -131,8 +116,8 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(updatedTask.hour).toBe(task.hour);
   });
 
-  test("6: Set task with period as full day", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 6: Set task with period as full day", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "lalala",
@@ -142,10 +127,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       hour: "03:45"
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.full_day = true;
 
@@ -156,8 +138,8 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(updatedTask.full_day).toBe(task.full_day);
   });
 
-  test("7: Try to update task without send task id", async () => {
-    const { authorization, email } = await generateUser();
+  test("Test 7: Try to update task without send task id", async () => {
+    const { authorization } = await generateUser();
 
     const task = {
       name: "lalala",
@@ -166,10 +148,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(authorization, {
-      user_account: email,
-      task,
-    });
+    await createTask(authorization, task);
 
     task.name = "new name";
     task.desc = "new description";
@@ -182,7 +161,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
     expect(status).toBe(400);
   });
 
-  test("8: Try to update task of another user", async () => {
+  test("Test 8: Try to update task of another user", async () => {
     const userA = await generateUser();
     const userB = await generateUser();
 
@@ -193,10 +172,7 @@ describe("It tests unexpected behavior for route that creates a new task into da
       full_day: true
     }
 
-    await createTask(userA.authorization, {
-      user_account: userA.email,
-      task: task,
-    });
+    await createTask(userA.authorization, task);
 
     task.name = "new name";
     task.desc = "new description";

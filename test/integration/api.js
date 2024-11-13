@@ -39,24 +39,21 @@ async function generateUser() {
 }
 
 /* TASKS */
-async function autoCreateTask(token, email) {
+async function autoCreateTask(token) {
   return await createTask(token, {
-    user_account: email,
-    task: {
       name: "lalala",
       desc: "none",
       date: "2020-01-20",
       hour: "",
       full_day: true,
-    }
   });
 }
 
-async function createTask(token, body) {
+async function createTask(token, task) {
   return await http
     .post(`/tasks${createTaskRoute}`)
     .set("authorization", token)
-    .send(body);
+    .send(task);
 }
 
 async function deleteTask(token, taskId) {
