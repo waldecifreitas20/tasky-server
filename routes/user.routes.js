@@ -11,7 +11,7 @@ module.exports = (app) => {
     userMiddlewares.checkUserToken,
     userControllers.checkToken
   );
-  
+
   userRouter.post(
     user.signUpRoute,
     userMiddlewares.checkUserSignUp,
