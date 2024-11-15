@@ -63,8 +63,26 @@ async function loginUser(req, res) {
   }
 }
 
+async function loginGoogle(req, res) {
+  try {
+    const response = await userServices.loginWithGoogle(req.headers.authorization);
+
+    return res
+      .status(response.httpStatus)
+      .json(response.body);
+  } catch (error) {
+    console.error(error);
+
+    return res
+      .status(500)
+      .json({ error: "Unexpected error occurred. Try again later" });
+  }
+
+}
+
 module.exports = {
   signUpUser,
   checkToken,
-  loginUser
+  loginUser,
+  loginGoogle
 }

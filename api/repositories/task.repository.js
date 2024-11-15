@@ -1,26 +1,22 @@
 const { TaskModel } = require("../models/Task.js")
 
-async function createTask(task) {
-  await TaskModel.create(task);
+async function createTask(task, userPk) {
+  await TaskModel.create(task, userPk);
 }
 
 async function getTasksByUser(userPk) {
   return await TaskModel.getByOwner(userPk);
 }
 
-async function getTaskById(id) {
-  return await TaskModel.getById(id);
+async function deleteTask(taskId, userPk) {
+  return await TaskModel.delete(taskId, userPk);
 }
 
-async function deleteTask(id) {
-  return await TaskModel.delete(id);
+async function updateTask(taskId, userPk, updates) {
+  return await TaskModel.update(taskId, userPk, updates);
 }
 
-async function updateTask(taskId, owner, updates) {
-  return await TaskModel.update(taskId, owner, updates);
-}
-
-async function hasTask(userPk, taskId) {
+async function hasTask(taskId, userPk) {
   return await TaskModel.isOwner(taskId, userPk);
 }
 
@@ -28,7 +24,6 @@ async function hasTask(userPk, taskId) {
 module.exports = {
   deleteTask,
   createTask,
-  getTaskById,
   getTasksByUser,
   updateTask,
   hasTask,

@@ -7,9 +7,8 @@ class TaskModel {
     description,
     date,
     hour,
-    is_all_day,
-    belongs_to
-  }) {
+    is_all_day
+  }, userId) {
 
     return await sql`
       INSERT INTO tasks( 
@@ -25,11 +24,11 @@ class TaskModel {
           ${date},
           ${hour},
           ${is_all_day},
-          ${belongs_to}  
+          ${userId}  
       );`;
   }
 
-  async getByOwner(email) {
+  async getByOwner(userId) {
     return await sql`
       SELECT 
         task_id AS id, 
@@ -39,7 +38,7 @@ class TaskModel {
         hour,
         is_all_day AS full_day 
       FROM tasks
-      WHERE tasks.belongs_to = ${email}
+      WHERE tasks.belongs_to = ${userId}
       ORDER BY tasks.date DESC;
     `;
 
@@ -53,11 +52,12 @@ class TaskModel {
     `;
   }
 
-  async delete(taskId) {
+  async delete(taskId, userId) {
     return await sql`
       DELETE 
       FROM tasks
-      WHERE tasks.task_id = ${taskId};
+      WHERE tasks.task_id = ${taskId}
+      AND tasks.belongs_to = ${userId};
     `;
   }
 
@@ -72,13 +72,11 @@ class TaskModel {
     `;
   }
 
-  async isOwner(taskId, userEmail) {
+  async isOwner(taskId, userId) {
     const result = await sql`
     SELECT *
-    FROM users
-    INNER JOIN tasks
-    ON tasks.belongs_to = users.email
-    WHERE tasks.belongs_to = ${userEmail}
+    FROM tasks
+    WHERE tasks.belongs_to = ${userId}
     AND tasks.task_id = ${taskId};
     `;
 

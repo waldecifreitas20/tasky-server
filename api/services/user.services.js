@@ -1,11 +1,10 @@
 const getPath = require("path").resolve;
 
-const { extractToken } = require("../../utils/jwt");
-const { verifyAccount } = require("../external/googleAuth");
 const userRepo = require("../repositories/user.respository");
 
 const { generateToken } = require(getPath("utils/jwt"));
 const { errorResponse, responseMessage } = require(getPath("utils/messages"));
+const { verifyAccount } = require("../externals/googleAuth");
 const bcrypt = require(getPath("utils/bcrypt"));
 
 
@@ -25,7 +24,10 @@ async function createUser(userData) {
     return responseMessage(
       200,
       "user account has been created with success",
-      { authorization: token }
+      {
+        authorization: token,
+        username: userData.username
+      }
     );
 
   } catch (error) {
@@ -39,7 +41,7 @@ async function createUser(userData) {
 
 async function login(email, password) {
   try {
-    const user = await userRepo.getUserByPk(email);
+    const user = await userRepo.getUserByEmail(email);
 
     const isSamePassword = bcrypt.checkPassword(user.password, password);
 
@@ -50,7 +52,7 @@ async function login(email, password) {
     const token = generateToken({ email, username: user.username });
 
     return responseMessage(
-      200, undefined,
+      200, "login succeed",
       { username: user.username, authorization: token }
     );
 
@@ -58,19 +60,33 @@ async function login(email, password) {
     if (error.code === "59123") {
       return errorResponse(401, "Invalid credentials");
     }
-    return errorResponse(502, "Several Error", "Create user process has failed");
+    return errorResponse(502, "Several Error", "Login attempt has failed");
   }
 }
 
 async function loginWithGoogle(googleToken) {
-  const accountCheck = await verifyAccount(googleToken);
+  try {
+    const { user, isValidToken } = await verifyAccount(googleToken);
 
-  if (!accountCheck.isValidToken) {
-    return errorResponse(401, "Invalid google account");
+    if (!isValidToken) {
+      return errorResponse(401, "Invalid google credentials");
+    }
+
+    
+    if (await userRepo.hasUser(user.email)) {
+      return await login(user.email, user.sub);
+    }
+
+    return await createUser({
+      email: user.email,
+      password: user.sub,
+      username: user.name
+    });
+
+  } catch (error) {
+    console.log(error);
+    return errorResponse(502, "Invalid google credentials");
   }
-
-  
-  return responseMessage(200, undefined, { msg: 'vai se ferrar' });
 }
 module.exports = {
   createUser,

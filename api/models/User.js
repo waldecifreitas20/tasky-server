@@ -3,7 +3,7 @@ const { sql } = require(getPath("database/database.js"))
 
 class UserModel {
 
-  async getByPk(email) {
+  async getByEmail(email) {
     return await sql`
     SELECT * FROM users WHERE users.email = ${email};
   `;
