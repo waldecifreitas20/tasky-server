@@ -14,7 +14,19 @@ async function getUserByEmail(email) {
   return result[0];
 }
 
+async function hasUser(email) {
+  try {
+    const user = await getUserByEmail(email)
+    console.log(user);
+    
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   createUser,
   getUserByEmail,
+  hasUser,
 }
