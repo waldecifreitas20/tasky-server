@@ -40,15 +40,9 @@ async function checkToken(req, res) {
 
 async function loginUser(req, res) {
   try {
-    const loginType = req.headers.login_type;
-    let response;
-    
-    if (loginType === 'g-account') {
-      response = await userServices.loginWithGoogle(req.headers.authorization)
-    } else {
-      const { email, password } = req.body;
-      response = await userServices.login(email, password);
-    }
+
+    const { email, password } = req.body;
+    const response = await userServices.login(email, password);
     
     return res
       .status(response.httpStatus)

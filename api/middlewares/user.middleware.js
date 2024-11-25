@@ -53,20 +53,7 @@ async function checkUserToken(req, res, next) {
 }
 
 
-function checkUserLogin(req, res, next) {
-  if (req.headers.login_type === "g-account") {
-    
-    if (!req.headers.authorization) {
-      return sendErrorResponse(res, 400, {
-        error: "Missing token",
-        message: "no google token was provided in headers",
-      });
-    }
-    return next();
-  }
-  
-  console.log(req.body);
-  
+function checkUserLogin(req, res, next) { 
   if (!req.body || Object.keys(req.body).length === 0) {
     return sendErrorResponse(res, 401, {
       error: "missing params",
