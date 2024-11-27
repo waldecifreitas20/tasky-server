@@ -1,7 +1,7 @@
 const getPath = require("path").resolve;
 const { isValidToken } = require(getPath("utils/jwt.js"));
 const { sendErrorResponse } = require(getPath("utils/messages.js"));
-const { isInvalidEmail, isInvalidPassword } = require(getPath("utils/validations.js"));
+const { checkEmail, checkPassword } = require(getPath("utils/validations.js"));
 
 
 async function checkUserSignUp(req, res, next) {
@@ -14,11 +14,18 @@ async function checkUserSignUp(req, res, next) {
 
   const { username, email, password } = req.body;
 
-  if (!username || isInvalidEmail(email) || isInvalidPassword(password)) {
+  if (!username) {
     return sendErrorResponse(res, 400, {
-      error: "invalid params",
-      message: "email, username and/or password are not valid",
+      error: "missing params",
+      message: "no username found in body request",
     });
+  }
+
+  try {
+    checkEmail(email);
+    checkPassword(password);
+  } catch (error) {
+    return sendErrorResponse(res, 400, { error });
   }
 
   return next();
@@ -53,7 +60,7 @@ async function checkUserToken(req, res, next) {
 }
 
 
-function checkUserLogin(req, res, next) { 
+function checkUserLogin(req, res, next) {
   if (!req.body || Object.keys(req.body).length === 0) {
     return sendErrorResponse(res, 401, {
       error: "missing params",
@@ -74,7 +81,7 @@ function checkUserLogin(req, res, next) {
 
 function checkGoogleAuth(req, res, next) {
   console.log(req.headers.authorization);
-  
+
   if (!req.headers.authorization) {
     return sendErrorResponse(res, 400, {
       error: "No token provided"
