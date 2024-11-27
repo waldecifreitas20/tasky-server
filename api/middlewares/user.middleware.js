@@ -1,7 +1,7 @@
 const getPath = require("path").resolve;
 const { isValidToken } = require(getPath("utils/jwt.js"));
 const { sendErrorResponse } = require(getPath("utils/messages.js"));
-const { checkEmail, checkPassword } = require(getPath("utils/validations.js"));
+const { checkEmail, checkPassword, isInvalidPassword, isInvalidEmail } = require(getPath("utils/validations.js"));
 
 
 async function checkUserSignUp(req, res, next) {
@@ -61,7 +61,9 @@ async function checkUserToken(req, res, next) {
 
 
 function checkUserLogin(req, res, next) {
-  if (!req.body || Object.keys(req.body).length === 0) {
+  const isEmptyBody = !req.body || Object.keys(req.body).length === 0;
+  
+  if (isEmptyBody) {
     return sendErrorResponse(res, 401, {
       error: "missing params",
       message: "Email and/or password missing",
@@ -70,13 +72,16 @@ function checkUserLogin(req, res, next) {
 
   const { email, password } = req.body;
 
-  if (isInvalidEmail(email) || isInvalidPassword(password)) {
+  try {
+    checkEmail(email);
+    checkPassword(password);
+  } catch (error) {
     return sendErrorResponse(res, 401, {
       error: "Invalid credentials",
     });
   }
-
-  next();
+  
+  return next();
 }
 
 function checkGoogleAuth(req, res, next) {
