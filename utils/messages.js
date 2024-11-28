@@ -26,10 +26,10 @@ const errorResponse = (httpStatus, error, details) => {
   }
 }
 
-const sendErrorResponse = (res, httpStatus, { error, message }) => {
+const sendErrorResponse = (res, httpStatus, { error, details }) => {
   return res
     .status(httpStatus)
-    .json({ error, message })
+    .json({ error, details })
 }
 
 

@@ -13,7 +13,7 @@ function isInvalidEmail(email) {
 function checkEmail(email) {
   if (!email) {
     throw {
-      code: "MISSING_EMAIL",
+      error: "missing email",
       message: "No email sent"
     };
   }
@@ -21,7 +21,7 @@ function checkEmail(email) {
   const hasAtSign = email.indexOf("@") != -1;
   if (!hasAtSign) {
     throw {
-      code: "MISSING_AT_SIGN",
+      error: "missing at sign",
       message: "Email must have AT sign, e.g., @gmail.com, @outlook.com",
     };
   }
@@ -29,7 +29,7 @@ function checkEmail(email) {
   const hasDot = email.indexOf(".") != -1;
   if (!hasDot) {
     throw {
-      code: "MISSING_DOT",
+      error: "missing a dot",
       message: "Email must have '.'(dot), e.g., .com, .br, .uk",
     };
   }
@@ -48,8 +48,8 @@ function isInvalidPassword(password) {
 function checkPassword(password) {
   if (!password) {
     throw {
-      code: "MISSING_PASSWORD",
-      message: "No password found",
+      error: "missing password",
+      details: "No password found",
     };
   }
 
@@ -57,9 +57,8 @@ function checkPassword(password) {
   
   if (!isValidLength) {
     throw {
-      code: "INVALID_LENGTH",
-      message: "Password length must be between 8 and 16 characters",
-      length_found: password.length,
+      error: "invalid length",
+      details: "Password must have between 8 and 16 characters",
     };
   }
 

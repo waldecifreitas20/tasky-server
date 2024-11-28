@@ -1,14 +1,14 @@
 const getPath = require("path").resolve;
 const { isValidToken } = require(getPath("utils/jwt.js"));
 const { sendErrorResponse } = require(getPath("utils/messages.js"));
-const { checkEmail, checkPassword, isInvalidPassword, isInvalidEmail } = require(getPath("utils/validations.js"));
+const { checkEmail, checkPassword } = require(getPath("utils/validations.js"));
 
 
 async function checkUserSignUp(req, res, next) {
   if (!req.body) {
     return sendErrorResponse(res, 400, {
       error: "missing params",
-      message: "request body must have username, email and password",
+      details: "request body must have username, email and password",
     });
   }
 
@@ -17,7 +17,7 @@ async function checkUserSignUp(req, res, next) {
   if (!username) {
     return sendErrorResponse(res, 400, {
       error: "missing params",
-      message: "no username found in body request",
+      details: "no username found in body request",
     });
   }
 
@@ -25,7 +25,10 @@ async function checkUserSignUp(req, res, next) {
     checkEmail(email);
     checkPassword(password);
   } catch (error) {
-    return sendErrorResponse(res, 400, { error });
+    return sendErrorResponse(res, 400, {
+      error: error.error,
+      details: error.message
+    });
   }
 
   return next();
@@ -36,7 +39,7 @@ async function checkUserToken(req, res, next) {
   if (!req.headers.authorization) {
     return sendErrorResponse(res, 401, {
       error: "Unauthorized",
-      message: "no token was provided in headers",
+      details: "no token was provided in headers",
     });
   }
 
@@ -46,14 +49,14 @@ async function checkUserToken(req, res, next) {
   if (bearer !== "Bearer") {
     return sendErrorResponse(res, 401, {
       error: "invalid token",
-      message: "Access token is invalid or has expired"
+      details: "Access token is invalid or has expired"
     });
   }
 
   if (!isValidToken(hash)) {
     return sendErrorResponse(res, 401, {
       error: "invalid token",
-      message: "Access token is invalid or has expired"
+      details: "Access token is invalid or has expired"
     });
   }
   return next();
@@ -62,11 +65,11 @@ async function checkUserToken(req, res, next) {
 
 function checkUserLogin(req, res, next) {
   const isEmptyBody = !req.body || Object.keys(req.body).length === 0;
-  
+
   if (isEmptyBody) {
     return sendErrorResponse(res, 401, {
       error: "missing params",
-      message: "Email and/or password missing",
+      details: "Email and/or password missing",
     });
   }
 
@@ -80,7 +83,7 @@ function checkUserLogin(req, res, next) {
       error: "Invalid credentials",
     });
   }
-  
+
   return next();
 }
 
