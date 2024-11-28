@@ -1,15 +1,3 @@
-function isInvalidEmail(email) {
-  if (!email || email.length < 8) {
-    return true;
-  }
-
-  const hasAtSign = email.indexOf("@") != -1;
-  const hasDot = email.indexOf(".") != -1;
-
-  return !hasAtSign || !hasDot;
-}
-
-
 function checkEmail(email) {
   if (!email) {
     throw {
@@ -36,15 +24,6 @@ function checkEmail(email) {
 
 }
 
-function isInvalidPassword(password) {
-  if (!password) {
-    return true;
-  }
-
-  return password.length < 8 || password.length > 16
-}
-
-
 function checkPassword(password) {
   if (!password) {
     throw {
@@ -65,8 +44,6 @@ function checkPassword(password) {
 }
 
 module.exports = {
-  isInvalidEmail,
-  isInvalidPassword,
   checkEmail,
   checkPassword,
 }

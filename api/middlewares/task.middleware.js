@@ -1,8 +1,6 @@
 const getPath = require("path").resolve;
 
 const { sendErrorResponse } = require(getPath("utils/messages"));
-const { isInvalidEmail } = require(getPath("utils/validations.js"));
-const { extractToken } = require(getPath("utils/jwt.js"));
 
 const hasRequiredParams = task => {
   if (!task) return false;
@@ -26,18 +24,12 @@ const hasRequiredParams = task => {
   return true;
 }
 
-const isSameEmail = (token, email) => {
-  const decode = extractToken(token);
-  return decode.email === email;
-}
-
-
 module.exports = {
   checkRequiredParams: (req, res, next) => {
     if (!hasRequiredParams(req.body)) {
       return sendErrorResponse(res, 400, {
         error: "missing required params",
-        message: `Required params are $name $date. $hour and $full_day must not be both null`
+        details: `Required params are $name $date. $hour and $full_day must not be both null`
       });
     }
 
@@ -57,8 +49,8 @@ module.exports = {
   checkBodyTask: (req, res, next) => {
     const task = req.body;
     const errorResponse = {
-      error: "No valid params has been sent",
-      message: "at least one of these following params " +
+      error: "missing required params",
+      details: "at least one of these following params " +
         "is required: name, desc, date, hour or full_day "
     };
 
